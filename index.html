@@ -412,11 +412,11 @@
     <div class="pwfield">
       <input type="password" id="pw" name="pw" placeholder="Team password" autocomplete="off" aria-describedby="pwerr">
       <button type="button" class="eye" id="togglepw" aria-label="Show password" aria-pressed="false" title="Show password">
-        <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18">
+        <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18" hidden>
           <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path>
           <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7"></circle>
         </svg>
-        <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18" hidden>
+        <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18">
           <path d="M2.5 12S6 5.5 12 5.5c1.6 0 3 .5 4.2 1.1M21.5 12S18 18.5 12 18.5c-1.7 0-3.1-.5-4.3-1.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
           <path d="M9.6 9.6a3.2 3.2 0 0 0 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
           <path d="M4 20 20 4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
@@ -516,8 +516,10 @@
       eye.setAttribute("aria-pressed", String(!showing));
       eye.setAttribute("aria-label", showing ? "Show password" : "Hide password");
       eye.setAttribute("title", showing ? "Show password" : "Hide password");
-      eye.querySelector(".eye-open").hidden = !showing;
-      eye.querySelector(".eye-off").hidden = showing;
+      // icon reflects the CURRENT state: crossed-out eye while the password is hidden.
+      // SVG elements have no `hidden` IDL property, so set the attribute directly.
+      eye.querySelector(".eye-open").toggleAttribute("hidden", showing);
+      eye.querySelector(".eye-off").toggleAttribute("hidden", !showing);
       input.focus();
     });
 
