@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>
+  :root { color-scheme: light dark; }
+  html, body { margin: 0; padding: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>GMS Fleet Defect Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #eff2f5;
+    --surface: #ffffff;
+    --surface-2: #f6f8fa;
+    --ink: #101a22;
+    --ink-2: #475966;
+    --ink-3: #7b8b96;
+    --line: #dae1e7;
+    --line-strong: #c3ced7;
+    --accent: #0d5c55;
+    --on-accent: #ffffff;
+    --p-high: #cc6108;
+    --p-medium: #9a7714;
+    --p-low: #3a7099;
+    --seg-ink: #ffffff;
+    --s-done: #2c7a56;
+    --s-test: #7346a8;
+    --s-deploy: #2a6497;
+    --created: #2f6fa8;
+    --completed: #5b9c22;
+    --grid: #e6ebef;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d1418;
+      --surface: #141e24;
+      --surface-2: #1a252c;
+      --ink: #e8eef2;
+      --ink-2: #9fb1bc;
+      --ink-3: #748895;
+      --line: #25333b;
+      --line-strong: #35474f;
+      --accent: #5dbfb0;
+      --on-accent: #0d1418;
+      --p-high: #f0a562;
+      --p-medium: #d9be6a;
+      --p-low: #82b3d6;
+      --seg-ink: #0d1418;
+      --s-done: #6fc39a;
+      --s-test: #b697e0;
+      --s-deploy: #79aede;
+      --created: #5b9ad4;
+      --completed: #6ea32b;
+      --grid: #223038;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0d1418;
+    --surface: #141e24;
+    --surface-2: #1a252c;
+    --ink: #e8eef2;
+    --ink-2: #9fb1bc;
+    --ink-3: #748895;
+    --line: #25333b;
+    --line-strong: #35474f;
+    --accent: #5dbfb0;
+    --on-accent: #0d1418;
+    --p-high: #f0a562;
+    --p-medium: #d9be6a;
+    --p-low: #82b3d6;
+    --seg-ink: #0d1418;
+    --s-done: #6fc39a;
+    --s-test: #b697e0;
+    --s-deploy: #79aede;
+    --created: #5b9ad4;
+    --completed: #6ea32b;
+    --grid: #223038;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans Thai", "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 32px 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  h1 {
+    font-family: Archivo, "IBM Plex Sans Thai", sans-serif;
+    font-size: clamp(26px, 5vw, 38px);
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    margin: 6px 0 0;
+    text-wrap: balance;
+  }
+
+  .lede { color: var(--ink-2); margin: 8px 0 0; max-width: 62ch; }
+
+  /* password gate */
+  .gate {
+    min-height: 82vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 20px;
+    padding-block: 48px;
+  }
+  .gatecard {
+    width: 100%;
+    max-width: 400px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 30px 28px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .lockicon { width: 30px; height: 30px; color: var(--accent); margin-bottom: 10px; }
+  .gatetitle {
+    font-family: Archivo, "IBM Plex Sans Thai", sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -.015em;
+    margin: 6px 0 0;
+  }
+  .gatehint { color: var(--ink-2); font-size: 13px; margin: 8px 0 18px; }
+  .gatecard .flabel { margin-bottom: 6px; }
+  .gatecard input {
+    background: var(--surface-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 11px 12px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    width: 100%;
+  }
+  .gatecard input::placeholder { color: var(--ink-3); }
+  .gatecard input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .gatebtn {
+    margin-top: 14px;
+    background: var(--accent);
+    color: var(--on-accent);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .gatebtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .gateerr { color: var(--p-high); font-size: 12.5px; margin: 12px 0 0; }
+
+  .modfilter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 18px; }
+  .flabel {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .kpi { background: var(--surface); padding: 16px 18px; }
+  .kpi .n {
+    font-family: Archivo, sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi .k {
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-top: 8px;
+    font-weight: 600;
+  }
+  .kpi .sub { font-size: 12px; color: var(--ink-2); margin-top: 3px; }
+  .kpi.alert .n { color: var(--p-high); }
+  .kpi.open .n { color: var(--s-deploy); }
+  .kpi.done .n { color: var(--s-done); }
+
+  section.panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  h2 {
+    font-family: Archivo, "IBM Plex Sans Thai", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    margin: 0 0 2px;
+  }
+  .panel .hint { font-size: 12px; color: var(--ink-3); margin: 0 0 18px; }
+
+  .barrow { display: grid; grid-template-columns: 132px 1fr 34px; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .barrow:last-child { margin-bottom: 0; }
+  .barrow .mod { font-weight: 600; font-size: 13px; }
+  .barrow .tot { text-align: right; font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--ink-2); }
+  .bar { display: flex; height: 22px; border-radius: 4px; overflow: hidden; background: var(--surface-2); gap: 2px; }
+  .seg { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--seg-ink); font-variant-numeric: tabular-nums; min-width: 0; }
+  .seg.high { background: var(--p-high); }
+  .seg.medium { background: var(--p-medium); }
+  .seg.low { background: var(--p-low); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-2); }
+  .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .dot.round { border-radius: 50%; }
+
+  /* line chart */
+  .chartbox { position: relative; }
+  .chartbox svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .tip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    line-height: 1.45;
+    box-shadow: 0 6px 20px -10px rgba(0, 0, 0, .5);
+    white-space: nowrap;
+    transform: translate(-50%, -100%);
+    z-index: 3;
+  }
+  .tip .d { font-weight: 700; margin-bottom: 3px; }
+  .tip .r { display: flex; align-items: center; gap: 6px; color: var(--ink-2); }
+  .tip .r b { color: var(--ink); font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 14px; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .controls input[type="search"] {
+    flex: 1 1 220px;
+    min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .controls input[type="search"]::placeholder { color: var(--ink-3); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink-2);
+    border-radius: 999px;
+    padding: 7px 13px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .chip:focus-visible, .controls input:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  details.module { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  details.module + details.module { margin-top: 14px; }
+  .mhead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    padding: 14px 20px;
+    background: var(--surface-2);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .mhead::-webkit-details-marker { display: none; }
+  details[open] .mhead { border-bottom: 1px solid var(--line); }
+  .caret { width: 12px; height: 12px; flex: none; color: var(--ink-3); transition: transform .15s ease; }
+  details[open] .caret { transform: rotate(90deg); }
+  .mhead h3 { font-family: Archivo, "IBM Plex Sans Thai", sans-serif; font-size: 17px; font-weight: 700; margin: 0; letter-spacing: -.01em; }
+  .mhead .count { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .mhead .mix { display: flex; gap: 10px; margin-left: auto; flex-wrap: wrap; }
+  .mhead .mix b { font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace; }
+
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; }
+  th {
+    text-align: left;
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 13px; }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface-2); }
+  tbody tr.isopen td:first-child { box-shadow: inset 3px 0 0 var(--s-deploy); }
+  td.key a { font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+  td.key a:hover { text-decoration: underline; }
+  td.sum { min-width: 260px; }
+  td.dim { color: var(--ink-2); white-space: nowrap; }
+  td.date { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td.date.none { color: var(--line-strong); }
+
+  .pri { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 12px; white-space: nowrap; }
+  .pri i { width: 3px; height: 14px; border-radius: 2px; display: inline-block; }
+  .pri.high { color: var(--p-high); } .pri.high i { background: var(--p-high); }
+  .pri.medium { color: var(--p-medium); } .pri.medium i { background: var(--p-medium); }
+  .pri.low { color: var(--p-low); } .pri.low i { background: var(--p-low); }
+
+  .pill { display: inline-block; border-radius: 999px; padding: 3px 9px; font-size: 11px; font-weight: 600; white-space: nowrap; border: 1px solid currentColor; }
+  .pill.done { color: var(--s-done); }
+  .pill.test { color: var(--s-test); }
+  .pill.deploy { color: var(--s-deploy); }
+
+  .empty { padding: 26px 20px; color: var(--ink-3); font-size: 13px; }
+
+  footer { border-top: 1px solid var(--line); padding-top: 18px; color: var(--ink-3); font-size: 12px; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  footer code { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--ink-2); background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 2px 6px; }
+
+  @media (max-width: 760px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .barrow { grid-template-columns: 96px 1fr 30px; gap: 8px; }
+    .mhead .mix { margin-left: 0; width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <form class="gatecard" id="gateform" autocomplete="off">
+    <svg class="lockicon" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="4" y="10" width="16" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+      <circle cx="12" cy="15.5" r="1.4" fill="currentColor"></circle>
+    </svg>
+    <div class="eyebrow">SirisoftP-26207 · TMA GMS Fleet Modification</div>
+    <h2 class="gatetitle">IFT Incident Summary by Module</h2>
+    <p class="gatehint">This dashboard is restricted to the project team. Enter the team password to view the defect detail.</p>
+    <label class="flabel" for="pw">Password</label>
+    <input type="password" id="pw" name="pw" placeholder="Team password" autocomplete="off" aria-describedby="pwerr">
+    <button type="submit" class="gatebtn" id="unlock">Unlock dashboard</button>
+    <p class="gateerr" id="pwerr" hidden>That password doesn't match. Check with the QA lead.</p>
+  </form>
+</div>
+
+<div class="wrap" id="wrap" hidden>
+  <header>
+    <div class="eyebrow">SirisoftP-26207 · TMA GMS Fleet Modification</div>
+    <h1>IFT Incident Summary by Module</h1>
+    <div class="modfilter">
+      <span class="flabel">Module</span>
+      <div class="chips" id="modchips" role="group" aria-label="Filter by module"></div>
+    </div>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="panel" id="chartpanel">
+    <h2>Raised vs. closed by date</h2>
+    <p class="hint">Defects raised each day (Jira start date) against defects closed each day (Jira due date). Only days with activity are marked.</p>
+    <div class="chartbox" id="chartbox"></div>
+    <div class="legend">
+      <span><i class="dot round" style="background:var(--created)"></i>Raised</span>
+      <span><i class="dot round" style="background:var(--completed)"></i>Closed</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Defect load per module</h2>
+    <p class="hint">Bar width is the defect count; segments are priority.</p>
+    <div id="bars"></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--p-high)"></i>High</span>
+      <span><i class="dot" style="background:var(--p-medium)"></i>Medium</span>
+      <span><i class="dot" style="background:var(--p-low)"></i>Low</span>
+    </div>
+  </section>
+
+  <div class="controls">
+    <input type="search" id="q" placeholder="Search summary, key, platform or status…" aria-label="Search defects">
+    <div class="chips" id="chips" role="group" aria-label="Filter by priority"></div>
+    <button class="chip" id="openOnly" type="button" aria-pressed="false">Not yet closed</button>
+  </div>
+
+  <div id="modules"></div>
+
+  <footer>
+    <span>Source: Jira · sirisoftth.atlassian.net · project <code>GMSFLEET</code></span>
+    <span id="stamp"></span>
+  </footer>
+</div>
+
+<script>
+  // ---- Password gate ---------------------------------------------------
+  // Courtesy lock only: this check runs in the browser, so treat the page's
+  // Share settings as the real access control.
+  (function () {
+    const PASSWORD = "Sirisoft@GMS";
+    const KEY = "gmsfleet-unlocked";
+    const gate = document.getElementById("gate");
+    const wrap = document.getElementById("wrap");
+    const form = document.getElementById("gateform");
+    const input = document.getElementById("pw");
+    const err = document.getElementById("pwerr");
+
+    function unlock() {
+      gate.hidden = true;
+      wrap.hidden = false;
+    }
+
+    try {
+      if (sessionStorage.getItem(KEY) === "1") unlock();
+    } catch (e) { /* storage blocked — stay locked */ }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (input.value === PASSWORD) {
+        try { sessionStorage.setItem(KEY, "1"); } catch (e2) { /* ignore */ }
+        unlock();
+      } else {
+        err.hidden = false;
+        input.value = "";
+        input.focus();
+      }
+    });
+
+    input.addEventListener("input", function () { err.hidden = true; });
+    if (!wrap.hidden) return;
+    input.focus();
+  })();
+
+  const BASE = "https://sirisoftth.atlassian.net/browse/";
+  const PRIOS = ["High", "Medium", "Low"];
+  const MODULES = ["A-Card", "Booking", "Standard Booking"];
+  const STATUS_ORDER = ["Ready to Test", "Waiting for Deploy", "Done"];
+
+  // key, module, summary, priority, status, platform, created, closed
+  const ISSUES = [
+    ["GMSFLEET-146","A-Card","[A-Card][iOS][FE] บันทึกร่างไม่บันทึกประเภท A-Card","High","Done","iOS","2026-09-18","2026-09-21"],
+    ["GMSFLEET-147","A-Card","[A-Card][Android][FE] บันทึกร่างไม่บันทึกประเภท A-Card","High","Done","Android","2026-09-18","2026-09-21"],
+    ["GMSFLEET-148","A-Card","[A-Card][iOS][FE] กรณี OCR แล้วข้อมูลที่อยู่เปลี่ยน จะต้องล้างค่า dropdown ด้านล่าง","High","Done","Android","2026-09-18","2026-09-21"],
+    ["GMSFLEET-153","A-Card","[A-Card][Android][FE] สร้าง A-Card จาก T-Target ไม่ default ประเภท A-Card","Medium","Done","Android","2026-09-18","2026-09-21"],
+    ["GMSFLEET-155","A-Card","[A-Card][BE] ไม่แสดง Noti เมื่อ Fleet ไม่อนุมัติ","High","Done","Backend","2026-09-18","2026-09-21"],
+    ["GMSFLEET-158","A-Card","[A-Card][BE] ไม่สามารถเลิกติดตาม A-card ได้","High","Done","Backend","2026-09-18","2026-09-21"],
+    ["GMSFLEET-161","A-Card","[A-Card][iOS][FE] เพิ่ม A-Card จากข้อมูลลูกค้าไม่ default ประเภท A-Card","High","Done","iOS","2026-09-18","2026-09-21"],
+    ["GMSFLEET-162","A-Card","[A-Card][Android][FE] เพิ่ม A-Card จากข้อมูลลูกค้าไม่ default ประเภท A-Card","High","Done","Android","2026-09-18","2026-09-21"],
+    ["GMSFLEET-168","A-Card","[A-Card][Android][FE] หน้าข้อมูลลูกค้าไม่ต้องแสดงประเภท A-Card","Medium","Done","Android","2026-09-18","2026-09-21"],
+    ["GMSFLEET-169","A-Card","[A-Card][iOS][FE] หน้าข้อมูลลูกค้าไม่ต้องแสดงประเภท A-Card","Medium","Done","iOS","2026-09-18","2026-09-21"],
+    ["GMSFLEET-171","A-Card","[A-Card][Android][FE] หน้าข้อมูลลูกค้าแสดงปุ่มสร้างใบจอง","Medium","Done","Android","2026-09-18","2026-09-21"],
+
+    ["GMSFLEET-154","Booking","[Booking][Android][FE] กดส่งให้ Fleet อนุมัติ แสดง pop up ไม่ถูกต้อง","Low","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-156","Booking","[Booking][Android][FE] กรอกบัตรประชาชนที่มีในระบบแล้วระบบดึงค่าประเภทใบจองมาทับ","High","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-157","Booking","[Booking][iOS][FE] Smart Loan ไม่ default ลูกค้าทั่วไป ทำให้ error","High","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-159","Booking","[Booking][iOS][FE] เมื่อแก้ไขรุ่นรถแล้วกดย้อนกลับสามารถบันทึกร่างได้","High","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-160","Booking","[Booking][Android][FE] เมื่อแก้ไขรุ่นรถแล้วกดย้อนกลับสามารถบันทึกร่างได้","High","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-166","Booking","[Booking][iOS][FE] แก้ไขรถใน Booking แล้วกดส่งให้ Fleet แสดง pop up AO","Low","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-167","Booking","[Booking][Android][FE] แก้ไขรถใน Booking แล้วกดส่งให้ Fleet แสดง pop up AO","Low","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-170","Booking","[Booking][iOS][FE] แก้ไขรถใน Booking แล้วกดส่งให้ Fleet ไม่สามารถส่งได้ error 400","High","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-173","Booking","[Booking][Android][FE] สร้าง STD Fleet มี AO ไม่แสดง AO ใน Booking","Medium","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-178","Booking","[Booking][iOS][FE] Fleet ต้องแสดงสถานะ Retail Sales","Low","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-179","Booking","[Booking][Android][FE] Fleet ต้องแสดงสถานะ Retail Sales","Low","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-181","Booking","[Booking][Android][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-182","Booking","[Booking][iOS][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Ready to Test","iOS","2026-09-21",null],
+    ["GMSFLEET-183","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติพร้อมกันต้องแสดง pop up แจ้งเตือน","Low","Waiting for Deploy","Backend","2026-09-21",null],
+    ["GMSFLEET-185","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติ แล้วบันทึกพร้อมกันต้องแสดง pop up แจ้งเตือน","High","Waiting for Deploy","Backend","2026-09-21",null],
+
+    ["GMSFLEET-149","Standard Booking","[STD][BE] ไม่ Auto fill เลขบัตรปชชจาก A-Card","Medium","Done","Backend","2026-09-21","2026-09-21"],
+    ["GMSFLEET-151","Standard Booking","[STD][iOS][FE] ต้อง map ฟิลด์ที่อยู่แยก","High","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-152","Standard Booking","[STD][Android][FE] ต้อง map ฟิลด์ที่อยู่แยก","High","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-164","Standard Booking","[STD][iOS][FE] สถานะ Booking อนุมัติการแก้ไข ไม่ต้องมี OCR","Medium","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-165","Standard Booking","[STD][Android][FE] สถานะ Booking อนุมัติการแก้ไข ไม่ต้องมี OCR","Medium","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-172","Standard Booking","[STD][Web][FE] สร้างแล้วไม่ Default ประเภทใบจอง","Medium","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-175","Standard Booking","[STD][Web][FE] ถ้าเป็น A-Card หรือ Booking แล้วจะต้องแก้ไข ประเภทใบจอง ไม่ได้","High","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-176","Standard Booking","[STD][iOS][FE] ถ้าเป็น A-Card หรือ Booking แล้วจะต้องแก้ไข ประเภทใบจอง ไม่ได้","High","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-177","Standard Booking","[STD][Android][FE] ถ้าเป็น A-Card หรือ Booking แล้วจะต้องแก้ไข ประเภทใบจอง ไม่ได้","High","Done","iOS","2026-09-21","2026-09-21"],
+    ["GMSFLEET-180","Standard Booking","[STD][Web][FE] Role Admin จะต้องไม่มีค่าใน สร้าง Booking บน GMS?","Medium","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-186","Standard Booking","[STD][Web][FE] กรณี OCR ต่างชาติ แสดง design ไม่ถูกต้อง","Low","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-200","Standard Booking","[STD][Web][FE] กรณี OCR แล้วคำนำหน้าไม่ตรงกับประเภทลูกค้าให้แสดงค่าว่าง","High","Ready to Test","Web","2026-09-21",null],
+    ["GMSFLEET-211","Standard Booking","[STD][iOS][FE] กรณีเลขบัตรประชาชนจาก A-Card เป็นค่าว่าง ไม่ได้ต้องใส่ค่า","High","Done","iOS","2026-09-21","2026-09-21"]
+  ].map(function (r) {
+    return { key: r[0], module: r[1], summary: r[2], priority: r[3], status: r[4], device: r[5], created: r[6], closed: r[7] };
+  });
+
+  const slug = function (s) { return s.toLowerCase().replace(/[^a-z]/g, ""); };
+  const esc = function (s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  };
+  const statusClass = function (s) {
+    if (s === "Done") return "done";
+    if (s === "Ready to Test") return "test";
+    return "deploy";
+  };
+  const shortDate = function (iso) {
+    const d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+  };
+
+  // ---- KPI tiles -------------------------------------------------------
+  function renderKpis(list, mods) {
+    const total = list.length;
+    const openCount = list.filter(function (i) { return i.status !== "Done"; }).length;
+    const severe = list.filter(function (i) { return i.priority === "High"; }).length;
+    const cleared = mods.filter(function (m) {
+      const rows = list.filter(function (i) { return i.module === m; });
+      return rows.length && rows.every(function (i) { return i.status === "Done"; });
+    });
+
+    document.getElementById("kpis").innerHTML = [
+      '<div class="kpi"><div class="n">' + total + '</div><div class="k">Defects</div><div class="sub">across ' + mods.length + (mods.length === 1 ? ' module' : ' modules') + '</div></div>',
+      '<div class="kpi alert"><div class="n">' + severe + '</div><div class="k">High priority</div><div class="sub">' + (total ? Math.round(severe / total * 100) : 0) + '% of the backlog</div></div>',
+      '<div class="kpi open"><div class="n">' + openCount + '</div><div class="k">Not yet closed</div><div class="sub">' + (total - openCount) + ' done</div></div>',
+      '<div class="kpi done"><div class="n">' + cleared.length + ' / ' + mods.length + '</div><div class="k">Modules fully closed</div><div class="sub">' + (cleared.length ? cleared.join(", ") : "none yet") + '</div></div>'
+    ].join("");
+  }
+
+  // ---- Created vs completed line chart ---------------------------------
+  function renderChart(list) {
+    const DAY = 86400000;
+    const createdBy = {}, closedBy = {};
+    const stamps = [];
+    list.forEach(function (i) {
+      if (i.created) {
+        createdBy[i.created] = (createdBy[i.created] || 0) + 1;
+        stamps.push(new Date(i.created + "T00:00:00").getTime());
+      }
+      if (i.closed) {
+        closedBy[i.closed] = (closedBy[i.closed] || 0) + 1;
+        stamps.push(new Date(i.closed + "T00:00:00").getTime());
+      }
+    });
+
+    const panel = document.getElementById("chartpanel");
+    if (!stamps.length) { panel.hidden = true; return; }
+    panel.hidden = false;
+
+    // one clear day of margin either side of the activity
+    const start = Math.min.apply(null, stamps) - DAY;
+    let end = Math.max.apply(null, stamps) + DAY;
+    if (end - start < 4 * DAY) end = start + 4 * DAY;
+    const days = Math.round((end - start) / DAY);
+
+    const dates = [];
+    for (let d = 0; d <= days; d++) {
+      const t = start + d * DAY;
+      const dt = new Date(t);
+      const iso = dt.getFullYear() + "-" +
+        String(dt.getMonth() + 1).padStart(2, "0") + "-" +
+        String(dt.getDate()).padStart(2, "0");
+      dates.push({ i: d, iso: iso, c: createdBy[iso] || 0, f: closedBy[iso] || 0 });
+    }
+
+    const W = 860, H = 280, L = 40, R = 28, T = 16, B = 42;
+    const peak = Math.max.apply(null, dates.map(function (d) { return Math.max(d.c, d.f); }).concat([1]));
+    const step = peak <= 6 ? 2 : peak <= 16 ? 5 : 10;
+    const maxV = Math.ceil(peak / step) * step;
+    const ticks = [];
+    for (let v = 0; v <= maxV; v += step) ticks.push(v);
+    const px = function (i) { return L + i / days * (W - L - R); };
+    const py = function (v) { return H - B - v / maxV * (H - B - T); };
+
+    const path = function (field) {
+      return dates.filter(function (d) { return d[field] > 0; })
+        .map(function (d, n) { return (n ? "L" : "M") + px(d.i).toFixed(1) + " " + py(d[field]).toFixed(1); })
+        .join(" ");
+    };
+    const dots = function (field, cls) {
+      return dates.filter(function (d) { return d[field] > 0; })
+        .map(function (d) {
+          return '<circle class="' + cls + '" cx="' + px(d.i).toFixed(1) + '" cy="' + py(d[field]).toFixed(1) +
+            '" r="4.5" fill="var(--' + cls + ')" stroke="var(--surface)" stroke-width="2"></circle>';
+        }).join("");
+    };
+
+    // With activity on only a day or two, a line has nothing to join —
+    // draw labelled bars instead so the counts still read.
+    const activeDays = dates.filter(function (d) { return d.c || d.f; }).length;
+    const asBars = activeDays <= 4;
+    const bars = function () {
+      const slot = (W - L - R) / days;
+      const bw = Math.min(26, Math.max(10, slot * 0.34));
+      return dates.filter(function (d) { return d.c || d.f; }).map(function (d) {
+        return [["c", "created", -1], ["f", "completed", 1]].map(function (s) {
+          const v = d[s[0]];
+          if (!v) return "";
+          const x = px(d.i) + (s[2] < 0 ? -bw - 2 : 2);
+          const y = py(v);
+          return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + bw.toFixed(1) +
+            '" height="' + (py(0) - y).toFixed(1) + '" rx="4" fill="var(--' + s[1] + ')"></rect>' +
+            '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (y - 8).toFixed(1) +
+            '" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink-2)">' + v + "</text>";
+        }).join("");
+      }).join("");
+    };
+
+    let grid = "", xlab = "";
+    ticks.forEach(function (v) {
+      grid += '<line x1="' + L + '" y1="' + py(v) + '" x2="' + (W - R) + '" y2="' + py(v) +
+        '" stroke="var(--grid)" stroke-width="1"></line>' +
+        '<text x="' + (L - 10) + '" y="' + (py(v) + 4) + '" text-anchor="end" font-size="11" fill="var(--ink-3)">' + v + "</text>";
+    });
+    const labelStep = Math.max(1, Math.ceil(days / 9));
+    for (let d = 0; d <= days; d += labelStep) {
+      xlab += '<text x="' + px(d).toFixed(1) + '" y="' + (H - B + 20) + '" text-anchor="middle" font-size="11" fill="var(--ink-3)">' +
+        shortDate(dates[d].iso) + "</text>";
+    }
+
+    const hits = dates.map(function (d) {
+      const w = (W - L - R) / days;
+      return '<rect class="hit" data-i="' + d.i + '" x="' + (px(d.i) - w / 2).toFixed(1) + '" y="' + T +
+        '" width="' + w.toFixed(1) + '" height="' + (H - B - T) + '" fill="transparent"></rect>';
+    }).join("");
+
+    document.getElementById("chartbox").innerHTML =
+      '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Defects raised and closed per day">' +
+      grid + xlab +
+      '<line class="cross" x1="0" y1="' + T + '" x2="0" y2="' + (H - B) + '" stroke="var(--line-strong)" stroke-width="1" opacity="0"></line>' +
+      (asBars ? bars() :
+        '<path d="' + path("c") + '" fill="none" stroke="var(--created)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>' +
+        '<path d="' + path("f") + '" fill="none" stroke="var(--completed)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>' +
+        dots("c", "created") + dots("f", "completed")) + hits +
+      "</svg>";
+
+    const box = document.getElementById("chartbox");
+    const svg = box.querySelector("svg");
+    const oldTip = box.querySelector(".tip");
+    if (oldTip) oldTip.remove();
+    const cross = svg.querySelector(".cross");
+    const tip = document.createElement("div");
+    tip.className = "tip";
+    tip.hidden = true;
+    box.appendChild(tip);
+
+    svg.addEventListener("mousemove", function (e) {
+      const hit = e.target.closest(".hit");
+      if (!hit) return;
+      const d = dates[+hit.dataset.i];
+      cross.setAttribute("x1", px(d.i));
+      cross.setAttribute("x2", px(d.i));
+      cross.setAttribute("opacity", "1");
+      tip.innerHTML = '<div class="d">' + shortDate(d.iso) + "</div>" +
+        '<div class="r"><i class="dot round" style="background:var(--created)"></i>Raised <b>' + d.c + "</b></div>" +
+        '<div class="r"><i class="dot round" style="background:var(--completed)"></i>Closed <b>' + d.f + "</b></div>";
+      tip.hidden = false;
+      const r = box.getBoundingClientRect();
+      tip.style.left = Math.min(Math.max(px(d.i) / W * r.width, 60), r.width - 60) + "px";
+      tip.style.top = (r.height * 0.55) + "px";
+    });
+    svg.addEventListener("mouseleave", function () {
+      tip.hidden = true;
+      cross.setAttribute("opacity", "0");
+    });
+  }
+
+  // ---- Distribution bars ----------------------------------------------
+  function renderBars(list, mods) {
+  const maxTotal = Math.max.apply(null, mods.map(function (m) {
+    return list.filter(function (i) { return i.module === m; }).length;
+  }).concat([1]));
+
+  document.getElementById("bars").innerHTML = mods.map(function (m) {
+    const rows = list.filter(function (i) { return i.module === m; });
+    const segs = PRIOS.map(function (p) {
+      const n = rows.filter(function (i) { return i.priority === p; }).length;
+      if (!n) return "";
+      return '<div class="seg ' + slug(p) + '" style="flex:' + n + ' 0 0" title="' + p + ': ' + n + '">' + n + "</div>";
+    }).join("");
+    return '<div class="barrow"><div class="mod">' + m + '</div>' +
+      '<div class="bar" style="width:' + (rows.length / maxTotal * 100) + '%" role="img" aria-label="' + m + ': ' + rows.length + ' defects">' + segs + "</div>" +
+      '<div class="tot">' + rows.length + "</div></div>";
+  }).join("");
+  }
+
+  // ---- Filters + module accordion --------------------------------------
+  const state = { q: "", prio: null, openOnly: false, module: null };
+  const openState = { "A-Card": true, "Booking": true, "Standard Booking": true };
+
+  const modChipsEl = document.getElementById("modchips");
+  modChipsEl.innerHTML = [{ v: null, t: "All · " + ISSUES.length }].concat(MODULES.map(function (m) {
+    return { v: m, t: m + " · " + ISSUES.filter(function (i) { return i.module === m; }).length };
+  })).map(function (o) {
+    return '<button class="chip" type="button" data-mod="' + (o.v === null ? "" : o.v) + '" aria-pressed="' +
+      (o.v === null) + '">' + o.t + "</button>";
+  }).join("");
+
+  modChipsEl.addEventListener("click", function (e) {
+    const btn = e.target.closest("button[data-mod]");
+    if (!btn) return;
+    state.module = btn.dataset.mod || null;
+    Array.prototype.forEach.call(modChipsEl.children, function (c) {
+      c.setAttribute("aria-pressed", String((c.dataset.mod || null) === state.module));
+    });
+    renderAll();
+  });
+
+  const chipsEl = document.getElementById("chips");
+  chipsEl.innerHTML = PRIOS.map(function (p) {
+    const n = ISSUES.filter(function (i) { return i.priority === p; }).length;
+    return '<button class="chip" type="button" data-prio="' + p + '" aria-pressed="false">' + p + " · " + n + "</button>";
+  }).join("");
+
+  chipsEl.addEventListener("click", function (e) {
+    const btn = e.target.closest("button[data-prio]");
+    if (!btn) return;
+    state.prio = state.prio === btn.dataset.prio ? null : btn.dataset.prio;
+    Array.prototype.forEach.call(chipsEl.children, function (c) {
+      c.setAttribute("aria-pressed", String(c.dataset.prio === state.prio));
+    });
+    render();
+  });
+
+  const openBtn = document.getElementById("openOnly");
+  openBtn.addEventListener("click", function () {
+    state.openOnly = !state.openOnly;
+    openBtn.setAttribute("aria-pressed", String(state.openOnly));
+    render();
+  });
+
+  document.getElementById("q").addEventListener("input", function (e) {
+    state.q = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  function matches(i) {
+    if (state.prio && i.priority !== state.prio) return false;
+    if (state.openOnly && i.status === "Done") return false;
+    if (state.q) {
+      const hay = (i.key + " " + i.summary + " " + i.device + " " + i.status).toLowerCase();
+      if (hay.indexOf(state.q) === -1) return false;
+    }
+    return true;
+  }
+
+  const modulesEl = document.getElementById("modules");
+
+  modulesEl.addEventListener("toggle", function (e) {
+    const el = e.target;
+    if (el.tagName === "DETAILS" && el.dataset.module) openState[el.dataset.module] = el.open;
+  }, true);
+
+  function shownModules() { return state.module ? [state.module] : MODULES; }
+
+  function renderAll() {
+    const list = state.module
+      ? ISSUES.filter(function (i) { return i.module === state.module; })
+      : ISSUES;
+    renderKpis(list, shownModules());
+    renderChart(list);
+    renderBars(list, shownModules());
+    render();
+  }
+
+  function render() {
+    modulesEl.innerHTML = shownModules().map(function (m) {
+      const all = ISSUES.filter(function (i) { return i.module === m; });
+      const rows = all.filter(matches).sort(function (a, b) {
+        return STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status) ||
+          PRIOS.indexOf(a.priority) - PRIOS.indexOf(b.priority) ||
+          a.key.localeCompare(b.key);
+      });
+      const stillOpen = all.filter(function (i) { return i.status !== "Done"; }).length;
+
+      const mix = PRIOS.map(function (p) {
+        const n = all.filter(function (i) { return i.priority === p; }).length;
+        return n ? '<span class="pri ' + slug(p) + '"><i></i>' + p + " <b>" + n + "</b></span>" : "";
+      }).join("");
+
+      const body = rows.length
+        ? '<div class="tablewrap"><table><thead><tr>' +
+          "<th>Key</th><th>Summary</th><th>Priority</th><th>Status</th><th>Platform</th><th>Raised</th><th>Closed</th>" +
+          "</tr></thead><tbody>" +
+          rows.map(function (i) {
+            return '<tr class="' + (i.status === "Done" ? "" : "isopen") + '">' +
+              '<td class="key"><a href="' + BASE + i.key + '" target="_blank" rel="noopener">' + i.key + "</a></td>" +
+              '<td class="sum">' + esc(i.summary) + "</td>" +
+              '<td><span class="pri ' + slug(i.priority) + '"><i></i>' + i.priority + "</span></td>" +
+              '<td><span class="pill ' + statusClass(i.status) + '">' + i.status + "</span></td>" +
+              '<td class="dim">' + i.device + "</td>" +
+              '<td class="date' + (i.created ? "" : " none") + '">' + (i.created ? shortDate(i.created) : "—") + "</td>" +
+              '<td class="date' + (i.closed ? "" : " none") + '">' + (i.closed ? shortDate(i.closed) : "—") + "</td>" +
+            "</tr>";
+          }).join("") +
+          "</tbody></table></div>"
+        : '<div class="empty">No defects in ' + m + " match the current filter.</div>";
+
+      return '<details class="module" data-module="' + m + '"' + (openState[m] ? " open" : "") + ">" +
+        '<summary class="mhead">' +
+        '<svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>' +
+        "<h3>" + m + "</h3>" +
+        '<span class="count">' + rows.length + " of " + all.length + " shown · " + stillOpen + " open</span>" +
+        '<div class="mix">' + mix + "</div></summary>" + body + "</details>";
+    }).join("");
+  }
+
+  renderAll();
+
+  document.getElementById("stamp").textContent =
+    "Pulled " + new Date().toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" });
+</script>
+
+</body>
+</html>
