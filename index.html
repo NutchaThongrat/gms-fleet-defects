@@ -263,7 +263,7 @@
   }
   .panel .hint { font-size: 12px; color: var(--ink-3); margin: 0 0 18px; }
 
-  .barrow { display: grid; grid-template-columns: 132px 1fr 34px; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .barrow { display: grid; grid-template-columns: 150px 1fr 34px; align-items: center; gap: 12px; margin-bottom: 12px; }
   .barrow:last-child { margin-bottom: 0; }
   .barrow .mod { font-weight: 600; font-size: 13px; }
   .barrow .tot { text-align: right; font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--ink-2); }
@@ -391,7 +391,7 @@
 
   @media (max-width: 760px) {
     .kpis { grid-template-columns: repeat(2, 1fr); }
-    .barrow { grid-template-columns: 96px 1fr 30px; gap: 8px; }
+    .barrow { grid-template-columns: 112px 1fr 30px; gap: 8px; }
     .mhead .mix { margin-left: 0; width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
@@ -530,14 +530,14 @@
 
   const BASE = "https://sirisoftth.atlassian.net/browse/";
   const PRIOS = ["High", "Medium", "Low"];
-  const MODULES = ["A-Card", "Booking", "Standard Booking"];
-  const STATUS_ORDER = ["Ready to Test", "Waiting for Deploy", "Done"];
+  const MODULES = ["A-Card", "Booking", "Standard Booking", "Fleet Master Data"];
+  const STATUS_ORDER = ["In Progress", "In Review", "Ready to Test", "Waiting for Deploy", "Done"];
 
   // key, module, summary, priority, status, platform, created, closed
   const ISSUES = [
     ["GMSFLEET-146","A-Card","[A-Card][iOS][FE] บันทึกร่างไม่บันทึกประเภท A-Card","High","Done","iOS","2026-09-18","2026-09-21"],
     ["GMSFLEET-147","A-Card","[A-Card][Android][FE] บันทึกร่างไม่บันทึกประเภท A-Card","High","Done","Android","2026-09-18","2026-09-21"],
-    ["GMSFLEET-148","A-Card","[A-Card][iOS][FE] กรณี OCR แล้วข้อมูลที่อยู่เปลี่ยน จะต้องล้างค่า dropdown ด้านล่าง","High","Done","Android","2026-09-18","2026-09-21"],
+    ["GMSFLEET-148","A-Card","[A-Card][iOS][FE] กรณี OCR แล้วข้อมูลที่อยู่เปลี่ยน จะต้องล่างค่า dropdown ด้านล่าง","High","Done","Android","2026-09-18","2026-09-21"],
     ["GMSFLEET-153","A-Card","[A-Card][Android][FE] สร้าง A-Card จาก T-Target ไม่ default ประเภท A-Card","Medium","Done","Android","2026-09-18","2026-09-21"],
     ["GMSFLEET-155","A-Card","[A-Card][BE] ไม่แสดง Noti เมื่อ Fleet ไม่อนุมัติ","High","Done","Backend","2026-09-18","2026-09-21"],
     ["GMSFLEET-158","A-Card","[A-Card][BE] ไม่สามารถเลิกติดตาม A-card ได้","High","Done","Backend","2026-09-18","2026-09-21"],
@@ -558,10 +558,11 @@
     ["GMSFLEET-173","Booking","[Booking][Android][FE] สร้าง STD Fleet มี AO ไม่แสดง AO ใน Booking","Medium","Done","Android","2026-09-21","2026-09-21"],
     ["GMSFLEET-178","Booking","[Booking][iOS][FE] Fleet ต้องแสดงสถานะ Retail Sales","Low","Done","iOS","2026-09-21","2026-09-21"],
     ["GMSFLEET-179","Booking","[Booking][Android][FE] Fleet ต้องแสดงสถานะ Retail Sales","Low","Done","Android","2026-09-21","2026-09-21"],
-    ["GMSFLEET-181","Booking","[Booking][Android][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Done","Android","2026-09-21","2026-09-21"],
+    ["GMSFLEET-181","Booking","[Booking][Android][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Ready to Test","Android","2026-09-21",null],
     ["GMSFLEET-182","Booking","[Booking][iOS][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Ready to Test","iOS","2026-09-21",null],
-    ["GMSFLEET-183","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติพร้อมกันต้องแสดง pop up แจ้งเตือน","Low","Waiting for Deploy","Backend","2026-09-21",null],
-    ["GMSFLEET-185","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติ แล้วบันทึกพร้อมกันต้องแสดง pop up แจ้งเตือน","High","Waiting for Deploy","Backend","2026-09-21",null],
+    ["GMSFLEET-183","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติพร้อมกันต้องแสดง pop up แจ้งเตือน","Low","Done","Backend","2026-09-21","2026-09-23"],
+    ["GMSFLEET-185","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติ แล้วบันทึกพร้อมกันต้องแสดง pop up แจ้งเตือน","High","In Review","Backend","2026-09-21",null],
+    ["GMSFLEET-236","Booking","[Booking][BE] ต้องแสดง Dropdown Fleet ที่ใช้งาน+sort ตาม ID","Medium","Ready to Test","Backend","2026-09-23",null],
 
     ["GMSFLEET-149","Standard Booking","[STD][BE] ไม่ Auto fill เลขบัตรปชชจาก A-Card","Medium","Done","Backend","2026-09-21","2026-09-21"],
     ["GMSFLEET-151","Standard Booking","[STD][iOS][FE] ต้อง map ฟิลด์ที่อยู่แยก","High","Done","iOS","2026-09-21","2026-09-21"],
@@ -574,8 +575,14 @@
     ["GMSFLEET-177","Standard Booking","[STD][Android][FE] ถ้าเป็น A-Card หรือ Booking แล้วจะต้องแก้ไข ประเภทใบจอง ไม่ได้","High","Done","iOS","2026-09-21","2026-09-21"],
     ["GMSFLEET-180","Standard Booking","[STD][Web][FE] Role Admin จะต้องไม่มีค่าใน สร้าง Booking บน GMS?","Medium","Done","Web","2026-09-21","2026-09-21"],
     ["GMSFLEET-186","Standard Booking","[STD][Web][FE] กรณี OCR ต่างชาติ แสดง design ไม่ถูกต้อง","Low","Done","Web","2026-09-21","2026-09-21"],
-    ["GMSFLEET-200","Standard Booking","[STD][Web][FE] กรณี OCR แล้วคำนำหน้าไม่ตรงกับประเภทลูกค้าให้แสดงค่าว่าง","High","Ready to Test","Web","2026-09-21",null],
-    ["GMSFLEET-211","Standard Booking","[STD][iOS][FE] กรณีเลขบัตรประชาชนจาก A-Card เป็นค่าว่าง ไม่ได้ต้องใส่ค่า","High","Done","iOS","2026-09-21","2026-09-21"]
+    ["GMSFLEET-200","Standard Booking","[STD][Web][FE] กรณี OCR แล้วคำนำหน้าไม่ตรงกับประเภทลูกค้าให้แสดงค่าว่าง","High","Done","Web","2026-09-21","2026-09-23"],
+    ["GMSFLEET-211","Standard Booking","[STD][iOS][FE] กรณีเลขบัตรประชาชนจาก A-Card เป็นค่าว่าง ไม่ได้ต้องใส่ค่า","High","Done","iOS","2026-09-21","2026-09-21"],
+
+    ["GMSFLEET-188","Fleet Master Data","[Fleet Master][Web][FE] ยิงค้นหาทันทีเมื่อกดปุ่มค้นหา","Low","Done","Web","2026-09-24","2026-09-24"],
+    ["GMSFLEET-221","Fleet Master Data","[Fleet Master][Web][FE] ไม่แสดง Pop Up ยืนยันการบันทึก","Medium","Done","Web","2026-09-24","2026-09-24"],
+    ["GMSFLEET-222","Fleet Master Data","[Fleet Master][Web][FE] แสดง Wording ID ซ้ำไม่ถูกต้อง","Medium","Done","Web","2026-09-24","2026-09-24"],
+    ["GMSFLEET-223","Fleet Master Data","[Fleet Master][Web][FE] Default sort ไม่ถูกต้อง","Low","In Review","Web","2026-09-24",null],
+    ["GMSFLEET-233","Fleet Master Data","[Fleet Manage][Web][FE] Fleet ID จะต้องดักเงื่อนไขการกรอก","Medium","In Review","Web","2026-09-24",null]
   ].map(function (r) {
     return { key: r[0], module: r[1], summary: r[2], priority: r[3], status: r[4], device: r[5], created: r[6], closed: r[7] };
   });
@@ -773,7 +780,7 @@
 
   // ---- Filters + module accordion --------------------------------------
   const state = { q: "", prio: null, openOnly: false, module: null };
-  const openState = { "A-Card": true, "Booking": true, "Standard Booking": true };
+  const openState = { "A-Card": true, "Booking": true, "Standard Booking": true, "Fleet Master Data": true };
 
   const modChipsEl = document.getElementById("modchips");
   modChipsEl.innerHTML = [{ v: null, t: "All · " + ISSUES.length }].concat(MODULES.map(function (m) {
