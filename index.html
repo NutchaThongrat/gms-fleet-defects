@@ -1,15 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
+<!doctype html><html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<style>
-  :root { color-scheme: light dark; }
-  html, body { margin: 0; padding: 0; }
-  img { max-width: 100%; }
-  [hidden] { display: none !important; }
-</style>
+<style>:root{color-scheme:light dark}html,body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>GMS Fleet Defect Summary</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -396,8 +389,8 @@
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
-</head>
-<body>
+
+</head><body>
 <div class="gate" id="gate">
   <form class="gatecard" id="gateform" autocomplete="off">
     <svg class="lockicon" viewBox="0 0 24 24" aria-hidden="true">
@@ -530,7 +523,7 @@
 
   const BASE = "https://sirisoftth.atlassian.net/browse/";
   const PRIOS = ["High", "Medium", "Low"];
-  const MODULES = ["A-Card", "Booking", "Standard Booking", "Fleet Master Data"];
+  const MODULES = ["A-Card", "Booking", "Standard Booking", "Fleet Master Data", "Fleet Management", "Report"];
   const STATUS_ORDER = ["In Progress", "In Review", "Ready to Test", "Waiting for Deploy", "Done"];
 
   // key, module, summary, priority, status, platform, created, closed
@@ -558,11 +551,11 @@
     ["GMSFLEET-173","Booking","[Booking][Android][FE] สร้าง STD Fleet มี AO ไม่แสดง AO ใน Booking","Medium","Done","Android","2026-09-21","2026-09-21"],
     ["GMSFLEET-178","Booking","[Booking][iOS][FE] Fleet ต้องแสดงสถานะ Retail Sales","Low","Done","iOS","2026-09-21","2026-09-21"],
     ["GMSFLEET-179","Booking","[Booking][Android][FE] Fleet ต้องแสดงสถานะ Retail Sales","Low","Done","Android","2026-09-21","2026-09-21"],
-    ["GMSFLEET-181","Booking","[Booking][Android][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Ready to Test","Android","2026-09-21",null],
-    ["GMSFLEET-182","Booking","[Booking][iOS][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Ready to Test","iOS","2026-09-21",null],
+    ["GMSFLEET-181","Booking","[Booking][Android][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Done","Android","2026-09-21","2026-09-25"],
+    ["GMSFLEET-182","Booking","[Booking][iOS][FE] เมื่อเปลี่ยน Fleet ID ที่ไม่แนบไฟล์แล้วกดส่งอนุมัติ Fleet หรือบันทึกจะต้องเคลียร์ไฟล์","Medium","Done","iOS","2026-09-21","2026-09-25"],
     ["GMSFLEET-183","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติพร้อมกันต้องแสดง pop up แจ้งเตือน","Low","Done","Backend","2026-09-21","2026-09-23"],
-    ["GMSFLEET-185","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติ แล้วบันทึกพร้อมกันต้องแสดง pop up แจ้งเตือน","High","In Review","Backend","2026-09-21",null],
-    ["GMSFLEET-236","Booking","[Booking][BE] ต้องแสดง Dropdown Fleet ที่ใช้งาน+sort ตาม ID","Medium","Ready to Test","Backend","2026-09-23",null],
+    ["GMSFLEET-185","Booking","[Booking][BE] กรณีส่งให้ Fleet อนุมัติ แล้วบันทึกพร้อมกันต้องแสดง pop up แจ้งเตือน","High","Done","Backend","2026-09-21","2026-09-25"],
+    ["GMSFLEET-236","Booking","[Booking][BE] ต้องแสดง Dropdown Fleet ที่ใช้งาน+sort ตาม ID","Medium","Done","Backend","2026-09-23",null],
 
     ["GMSFLEET-149","Standard Booking","[STD][BE] ไม่ Auto fill เลขบัตรปชชจาก A-Card","Medium","Done","Backend","2026-09-21","2026-09-21"],
     ["GMSFLEET-151","Standard Booking","[STD][iOS][FE] ต้อง map ฟิลด์ที่อยู่แยก","High","Done","iOS","2026-09-21","2026-09-21"],
@@ -581,8 +574,44 @@
     ["GMSFLEET-188","Fleet Master Data","[Fleet Master][Web][FE] ยิงค้นหาทันทีเมื่อกดปุ่มค้นหา","Low","Done","Web","2026-09-24","2026-09-24"],
     ["GMSFLEET-221","Fleet Master Data","[Fleet Master][Web][FE] ไม่แสดง Pop Up ยืนยันการบันทึก","Medium","Done","Web","2026-09-24","2026-09-24"],
     ["GMSFLEET-222","Fleet Master Data","[Fleet Master][Web][FE] แสดง Wording ID ซ้ำไม่ถูกต้อง","Medium","Done","Web","2026-09-24","2026-09-24"],
-    ["GMSFLEET-223","Fleet Master Data","[Fleet Master][Web][FE] Default sort ไม่ถูกต้อง","Low","In Review","Web","2026-09-24",null],
-    ["GMSFLEET-233","Fleet Master Data","[Fleet Manage][Web][FE] Fleet ID จะต้องดักเงื่อนไขการกรอก","Medium","In Review","Web","2026-09-24",null]
+    ["GMSFLEET-223","Fleet Master Data","[Fleet Master][Web][FE] Default sort ไม่ถูกต้อง","Low","Done","Web","2026-09-24","2026-09-25"],
+    ["GMSFLEET-233","Fleet Master Data","[Fleet Manage][Web][FE] Fleet ID จะต้องดักเงื่อนไขการกรอก","Medium","Done","Web","2026-09-24","2026-09-25"],
+
+    ["GMSFLEET-187","Fleet Management","[Fleet Manage][Web][FE] ยิงค้นหาทันทีเมื่อกดปุ่มค้นหา","Low","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-189","Fleet Management","[Fleet Manage][Web][FE] ฟิลเต้อ Fleet ID เพิ่ม ID","Low","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-192","Fleet Management","[Fleet Manage][Web][FE] กรณีเป็นสินเชื่อมาตรฐานต้องไม่แสดง RV ค่างวดสุดท้าย","Medium","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-193","Fleet Management","[Fleet Manage][Web][FE] ไม่สามารถดาวน์โหลด TXT ได้","High","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-194","Fleet Management","[Fleet Manage][Web][BE] แก้ไข Booking แล้วส่ง Fleet ใหม่ แสดงไฟล์แนบ 2 ไฟล์","High","Done","Backend","2026-09-21","2026-09-21"],
+    ["GMSFLEET-195","Fleet Management","[Fleet Manage][Web][BE] แก้ไข Booking แล้วส่ง Fleet ใหม่ แสดงชื่อลูกค้าเดิม","High","Done","Backend","2026-09-21","2026-09-23"],
+    ["GMSFLEET-196","Fleet Management","[Fleet Manage][Web][FE] แสดงฟิลด์ รอบชำระ (เดือน) ไม่ถูกต้อง","High","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-197","Fleet Management","[Fleet Manage][Web][FE][BE] แสดงฟิลด์ สถานะสินเชื่อ ไม่ถูกต้อง","High","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-199","Fleet Management","[Email][BE] ไม่สามารถกดลิงก์ได้","Medium","Done","Web","2026-09-21","2026-09-21"],
+    ["GMSFLEET-201","Fleet Management","[Fleet Manage][Web][FE] ช่องค้นหา ผู้แทนจำหน่าย แสดงแบบมี Dealer Code","Low","Done","Web","2026-09-21","2026-09-23"],
+    ["GMSFLEET-203","Fleet Management","[Fleet Manage][Web][BE] ส่งวันที่ค้นหาไปไม่ถูกต้อง","High","Done","Web","2026-09-21",null],
+    ["GMSFLEET-210","Fleet Management","[Fleet Manage][Web][BE] ช่องค้นหา สถานะการจอง ไม่ถูกต้อง","High","Done","Backend","2026-09-21","2026-09-21"],
+    ["GMSFLEET-215","Fleet Management","[Fleet Manage][Web][FE] ไม่แสดงคำนำหน้า","High","Done","Web","2026-09-21","2026-09-23"],
+    ["GMSFLEET-216","Fleet Management","[Fleet Manage][Web][FE] เมื่อบันทึกไม่สำเร็จให้แสดง wording ตาม BE ส่งมา","Low","Done","Web","2026-09-21","2026-09-23"],
+    ["GMSFLEET-224","Fleet Management","[Fleet Manage][Web][FE][BE] แสดงรายละเอียดไม่อนุมัติ ไม่ถูกต้อง","High","Done","Web","2026-09-21","2026-09-23"],
+    ["GMSFLEET-225","Fleet Management","[Fleet Manage][Web][BE] ไม่แสดงชื่อลูกค้า","High","Done","Web","2026-09-21","2026-09-23"],
+    ["GMSFLEET-226","Fleet Management","[Fleet Manage][Web][BE] ไม่แสดง รุ่น/แบบ ที่ค้นหา","High","Done","Web","2026-09-21","2026-09-23"],
+    ["GMSFLEET-228","Fleet Management","[Fleet Manage][Web][FE] อนุมัติหรือไม่อนุมัติแสดง pop up บันทึกไม่สำเร็จ แต่สถานะเปลี่ยน","Medium","Done","Web","2026-09-23","2026-09-23"],
+    ["GMSFLEET-230","Fleet Management","[Fleet Manage][Web][FE] ค้นหาสถานะการจอง - ระบบไม่แสดงเฉพาะ A-Card","High","Done","Web","2026-09-23","2026-09-25"],
+    ["GMSFLEET-231","Fleet Management","[Fleet Manage][Web][FE][BE] กรณีที่ยกเลิก Fleet อนุมัติโดยและวันที่จะต้องแสดงตาม record ก่อนหน้า","Medium","Ready to Test","Web","2026-09-23",null],
+    ["GMSFLEET-232","Fleet Management","[Fleet Manage][Web][BE][FE] หน้ารายละเอียดไม่แสดง DOP กับ conversion","High","Done","Web","2026-09-23","2026-09-25"],
+    ["GMSFLEET-234","Fleet Management","[Fleet Manage][Web][BE] ต้องแสดง Dropdown Fleet ทั้งใช้งานและไม่ใช้งาน+sort ตาม ID","Medium","Done","Web","2026-09-23","2026-09-25"],
+
+    ["GMSFLEET-202","Report","[Report][Android][FE] จำนวน Retail Sales ไม่ถูกต้อง","High","Done","Android","2026-09-22","2026-09-21"],
+    ["GMSFLEET-204","Report","[Report][Android][FE] กดข้อมูลใน list ต้อง link ไปยังหน้า A-Card หรือ Booking","High","Done","Android","2026-09-22","2026-09-21"],
+    ["GMSFLEET-205","Report","[Report][iOS][FE] กดข้อมูลใน list ต้อง link ไปยังหน้า A-Card หรือ Booking","High","Done","iOS","2026-09-22","2026-09-21"],
+    ["GMSFLEET-206","Report","[Report][BE] แสดงวันที่สร้าง Booking ไม่ถูกต้อง","High","Done","Backend","2026-09-22","2026-09-21"],
+    ["GMSFLEET-207","Report","[Report][iOS][FE] แสดงวันที่สร้าง Booking ไม่ถูกต้อง","High","Done","iOS","2026-09-22","2026-09-21"],
+    ["GMSFLEET-208","Report","[Report][BE] ไม่ส่ง Booking","High","Done","Backend","2026-09-22","2026-09-21"],
+    ["GMSFLEET-209","Report","[Report][iOS][FE] แสดงสถานะใน List ไม่ถูกต้อง","High","Done","iOS","2026-09-22","2026-09-21"],
+    ["GMSFLEET-214","Report","[Report][iOS][FE] ค้นหาสถานะการจอง - ระบบไม่แสดงเฉพาะ A-Card","High","Done","iOS","2026-09-22","2026-09-25"],
+    ["GMSFLEET-218","Report","[Report][iOS][BE] ค้นหาสถานะการจอง - ระบบไม่แสดงเฉพาะ A-Card","High","Done","Backend","2026-09-22","2026-09-25"],
+    ["GMSFLEET-219","Report","[Report][Android][FE] ค้นหาสถานะการจอง - ระบบไม่แสดงเฉพาะ A-Card","High","Done","Android","2026-09-22","2026-09-25"],
+    ["GMSFLEET-235","Report","[Report][BE] ต้องแสดง Dropdown Fleet ทั้งใช้งานและไม่ใช้งาน+sort ตาม ID","Medium","Done","Backend","2026-09-23","2026-09-25"],
+    ["GMSFLEET-239","Report","[Report][iOS][FE] กดรายการ A-Card กดแก้ไข Draft Booking แล้วแอปแคช (เป็นเฉพาะกดจาก Report)","High","Done","iOS","2026-09-25","2026-09-25"]
   ].map(function (r) {
     return { key: r[0], module: r[1], summary: r[2], priority: r[3], status: r[4], device: r[5], created: r[6], closed: r[7] };
   });
@@ -780,7 +809,7 @@
 
   // ---- Filters + module accordion --------------------------------------
   const state = { q: "", prio: null, openOnly: false, module: null };
-  const openState = { "A-Card": true, "Booking": true, "Standard Booking": true, "Fleet Master Data": true };
+  const openState = { "A-Card": true, "Booking": true, "Standard Booking": true, "Fleet Master Data": true, "Fleet Management": true, "Report": true };
 
   const modChipsEl = document.getElementById("modchips");
   modChipsEl.innerHTML = [{ v: null, t: "All · " + ISSUES.length }].concat(MODULES.map(function (m) {
@@ -904,6 +933,4 @@
   document.getElementById("stamp").textContent =
     "Pulled " + new Date().toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" });
 </script>
-
-</body>
-</html>
+</body></html>
