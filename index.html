@@ -390,6 +390,7 @@
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
+
 </head><body>
 <div class="gate" id="gate">
   <form class="gatecard" id="gateform" autocomplete="off">
@@ -524,7 +525,7 @@
   const BASE = "https://sirisoftth.atlassian.net/browse/";
   const PRIOS = ["High", "Medium", "Low"];
   const MODULES = ["A-Card", "Booking", "Standard Booking", "Fleet Master Data", "Fleet Management", "Report"];
-  const STATUS_ORDER = ["In Progress", "In Review", "Ready to Test", "Waiting for Deploy", "Done"];
+  const STATUS_ORDER = ["In Progress", "In Review", "Ready to Test", "Waiting for Deploy", "Done", "Canceled"];
 
   // key, module, summary, priority, status, platform, created, closed
   const ISSUES = [
@@ -599,10 +600,13 @@
     ["GMSFLEET-231","Fleet Management","[Fleet Manage][Web][FE][BE] กรณีที่ยกเลิก Fleet อนุมัติโดยและวันที่จะต้องแสดงตาม record ก่อนหน้า","Medium","Done","Web","2026-09-28",null],
     ["GMSFLEET-232","Fleet Management","[Fleet Manage][Web][BE][FE] หน้ารายละเอียดไม่แสดง DOP กับ conversion","High","Done","Web","2026-09-28","2026-09-28"],
     ["GMSFLEET-234","Fleet Management","[Fleet Manage][Web][BE] ต้องแสดง Dropdown Fleet ทั้งใช้งานและไม่ใช้งาน+sort ตาม ID","Medium","Done","Web","2026-09-28","2026-09-28"],
-    ["GMSFLEET-249","Fleet Management","[Fleet Manage][Web][BE] คอลัมน์ ลูกค้า sort ไม่ถูกต้อง","Low","In Review","Web","2026-09-29",null],
-    ["GMSFLEET-250","Fleet Management","[Fleet Manage][Web][BE] คอลัมน์ รุ่น รุ่น/แบบ sort ไม่ถูกต้อง","Low","In Review","Web","2026-09-29",null],
-    ["GMSFLEET-251","Fleet Management","[Fleet Manage][Web][BE] ค้นหา รุ่น/แบบ และออก txt ไม่มีข้อมูล","High","In Review","Web","2026-09-29",null],
-    ["GMSFLEET-252","Fleet Management","[Fleet Manage][Web][FE] VVIP จะต้องเช็กเบอร์โทรศัพท์บ้านด้วย","High","In Review","Web","2026-09-29",null],
+    ["GMSFLEET-249","Fleet Management","[Fleet Manage][Web][BE] คอลัมน์ ลูกค้า sort ไม่ถูกต้อง","Low","Done","Web","2026-09-29",null],
+    ["GMSFLEET-250","Fleet Management","[Fleet Manage][Web][BE] คอลัมน์ รุ่น รุ่น/แบบ sort ไม่ถูกต้อง","Low","Done","Web","2026-09-29",null],
+    ["GMSFLEET-251","Fleet Management","[Fleet Manage][Web][BE] ค้นหา รุ่น/แบบ และออก txt ไม่มีข้อมูล","High","Done","Web","2026-09-29",null],
+    ["GMSFLEET-252","Fleet Management","[Fleet Manage][Web][FE] VVIP จะต้องเช็กเบอร์โทรศัพท์บ้านด้วย","High","Ready to Test","Web","2026-09-29",null],
+    ["GMSFLEET-256","Fleet Management","[Fleet Manage][Web][BE] DOP ไม่ติดตั้ง จะต้องแสดง","Medium","Canceled","Web","2026-09-29",null],
+    ["GMSFLEET-257","Fleet Management","[Booking][iOS][FE] กรณี Fleet ที่เคยบันทึกไปแล้วกดไม่ใช้งาน ไม่แสดงชื่อโครงการ","Medium","In Review","iOS","2026-09-30",null],
+    ["GMSFLEET-258","Fleet Management","[Booking][Android][FE] กรณี Fleet ที่เคยบันทึกไปแล้วกดไม่ใช้งาน ไม่แสดงชื่อโครงการ","Medium","In Review","Android","2026-09-30",null],
 
     ["GMSFLEET-202","Report","[Report][Android][FE] จำนวน Retail Sales ไม่ถูกต้อง","High","Done","Android","2026-09-28","2026-09-28"],
     ["GMSFLEET-204","Report","[Report][Android][FE] กดข้อมูลใน list ต้อง link ไปยังหน้า A-Card หรือ Booking","High","Done","Android","2026-09-28","2026-09-28"],
@@ -615,7 +619,9 @@
     ["GMSFLEET-218","Report","[Report][iOS][BE] ค้นหาสถานะการจอง - ระบบไม่แสดงเฉพาะ A-Card","High","Done","Backend","2026-09-28","2026-09-28"],
     ["GMSFLEET-219","Report","[Report][Android][FE] ค้นหาสถานะการจอง - ระบบไม่แสดงเฉพาะ A-Card","High","Done","Android","2026-09-28","2026-09-28"],
     ["GMSFLEET-235","Report","[Report][BE] ต้องแสดง Dropdown Fleet ทั้งใช้งานและไม่ใช้งาน+sort ตาม ID","Medium","Done","Backend","2026-09-28","2026-09-28"],
-    ["GMSFLEET-239","Report","[Report][iOS][FE] กดรายการ A-Card กดแก้ไข Draft Booking แล้วแอปแคช (เป็นเฉพาะกดจาก Report)","High","Done","iOS","2026-09-28","2026-09-28"]
+    ["GMSFLEET-239","Report","[Report][iOS][FE] กดรายการ A-Card กดแก้ไข Draft Booking แล้วแอปแคช (เป็นเฉพาะกดจาก Report)","High","Done","iOS","2026-09-28","2026-09-28"],
+    ["GMSFLEET-254","Report","[Report][iOS][FE] เปลี่ยนการส่งรุ่นแบบ ให้ส่ง grade แบบมี suffic ต่อท้าย","High","In Review","iOS","2026-09-29",null],
+    ["GMSFLEET-255","Report","[Report][Android][FE] เปลี่ยนการส่งรุ่นแบบ ให้ส่ง grade แบบมี suffic ต่อท้าย","High","In Review","Android","2026-09-29",null]
   ].map(function (r) {
     return { key: r[0], module: r[1], summary: r[2], priority: r[3], status: r[4], device: r[5], created: r[6], closed: r[7] };
   });
