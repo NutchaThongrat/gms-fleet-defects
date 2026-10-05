@@ -389,6 +389,7 @@
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
+
 </head><body>
 <div class="gate" id="gate">
   <form class="gatecard" id="gateform" autocomplete="off">
@@ -522,7 +523,7 @@
 
   const BASE = "https://sirisoftth.atlassian.net/browse/";
   const PRIOS = ["High", "Medium", "Low"];
-  const MODULES = ["A-Card", "Booking", "Standard Booking", "Fleet Master Data", "Fleet Management", "Report"];
+  const MODULES = ["A-Card", "Booking", "Standard Booking", "Fleet Master Data", "Fleet Management", "Report", "Webclaim", "Dealer Linkage"];
   const STATUS_ORDER = ["In Progress", "In Review", "Ready to Test", "Waiting for Deploy", "Done", "Canceled"];
 
   // key, module, summary, priority, status, platform, created, closed
@@ -606,6 +607,7 @@
     ["GMSFLEET-251","Fleet Management","[Fleet Manage][Web][BE] ค้นหา รุ่น/แบบ และออก txt ไม่มีข้อมูล","High","Done","Web","2026-09-29","2026-09-30"],
     ["GMSFLEET-252","Fleet Management","[Fleet Manage][Web][FE] VVIP จะต้องเช็กเบอร์โทรศัพท์บ้านด้วย","High","Done","Web","2026-09-29","2026-09-30"],
     ["GMSFLEET-256","Fleet Management","[Fleet Manage][Web][BE] DOP ไม่ติดตั้ง จะต้องแสดง","Medium","Canceled","Web","2026-09-29",null],
+    ["GMSFLEET-266","Fleet Management","[Fleet Manage][Web] แก้ไขฟิลด์ Cancel Date ใน txt","High","In Review","Backend","2026-10-05",null],
 
     ["GMSFLEET-202","Report","[Report][Android][FE] จำนวน Retail Sales ไม่ถูกต้อง","High","Done","Android","2026-09-28","2026-09-28"],
     ["GMSFLEET-204","Report","[Report][Android][FE] กดข้อมูลใน list ต้อง link ไปยังหน้า A-Card หรือ Booking","High","Done","Android","2026-09-28","2026-09-28"],
@@ -622,7 +624,18 @@
     ["GMSFLEET-254","Report","[Report][iOS][FE] เปลี่ยนการส่งรุ่นแบบ ให้ส่ง grade แบบมี suffic ต่อท้าย","High","Done","iOS","2026-09-29",null],
     ["GMSFLEET-255","Report","[Report][Android][FE] เปลี่ยนการส่งรุ่นแบบ ให้ส่ง grade แบบมี suffic ต่อท้าย","High","Done","Android","2026-09-29",null],
     ["GMSFLEET-261","Report","[Report][iOS][FE] กรณีชื่อลูกค้า และชื่อ Fleet ยาวให้แสดงจุดสามจุด","Low","Done","iOS","2026-10-01","2026-10-01"],
-    ["GMSFLEET-262","Report","[Report][Android][FE] กรณีชื่อลูกค้า และชื่อ Fleet ยาวให้แสดงจุดสามจุด","Low","Done","Android","2026-10-01","2026-10-01"]
+    ["GMSFLEET-262","Report","[Report][Android][FE] กรณีชื่อลูกค้า และชื่อ Fleet ยาวให้แสดงจุดสามจุด","Low","Done","Android","2026-10-01","2026-10-01"],
+
+    ["GMSFLEET-242","Webclaim","[Webclaim][BE] Body ที่ส่งไปให้ Webclaim ไม่ถูกต้อง","Medium","Done","Backend","2026-09-28","2026-10-01"],
+    ["GMSFLEET-260","Webclaim","[Webclaim][BE] ส่งไปให้ Webclaim เฉพาะ DDMS ส่ง mode R","Medium","Done","Backend","2026-10-01","2026-10-05"],
+    ["GMSFLEET-264","Webclaim","[Webclaim][BE] ส่งหลายไฟล์ แสดงเป็นไฟล์แรกเสมอ","High","Done","Backend","2026-10-02","2026-10-05"],
+
+    ["GMSFLEET-238","Dealer Linkage","[Linkage][Booking] อัปเดตรถรุ่นเดิมรายการที่ Fleet ไม่อนุมัติแล้ว เป็น Fleet รออนุมัติ","High","Done","Backend","2026-09-18","2026-09-29"],
+    ["GMSFLEET-241","Dealer Linkage","[Linkage][Booking] ดักเงื่อนไขกรณี Fleet ID ไม่ได้ใช้งาน","Medium","Done","Backend","2026-09-28","2026-09-30"],
+    ["GMSFLEET-243","Dealer Linkage","[Linkage][Booking] ปรับการดักขนาดไฟล์จาก 5 MB เป็น 3 MB","Medium","Done","Backend","2026-09-28","2026-09-29"],
+    ["GMSFLEET-244","Dealer Linkage","[Linkage][Android] สร้าง A-Card จาก T-Target แสดง UI ไม่ถูกต้อง","High","Done","Android","2026-09-29",null],
+    ["GMSFLEET-245","Dealer Linkage","[Linkage][Booking] Cancel ไม่แสดง FleetApproveStatus","Medium","Done","Backend","2026-09-28","2026-09-29"],
+    ["GMSFLEET-248","Dealer Linkage","[Linkage][Inquiry] จะต้องค้นหา Fleet ID ไม่ได้ใช้งานได้","Medium","Done","Backend","2026-09-29","2026-09-29"]
   ].map(function (r) {
     return { key: r[0], module: r[1], summary: r[2], priority: r[3], status: r[4], device: r[5], created: r[6], closed: r[7] };
   });
@@ -820,7 +833,7 @@
 
   // ---- Filters + module accordion --------------------------------------
   const state = { q: "", prio: null, openOnly: false, module: null };
-  const openState = { "A-Card": true, "Booking": true, "Standard Booking": true, "Fleet Master Data": true, "Fleet Management": true, "Report": true };
+  const openState = { "A-Card": true, "Booking": true, "Standard Booking": true, "Fleet Master Data": true, "Fleet Management": true, "Report": true, "Webclaim": true, "Dealer Linkage": true };
 
   const modChipsEl = document.getElementById("modchips");
   modChipsEl.innerHTML = [{ v: null, t: "All · " + ISSUES.length }].concat(MODULES.map(function (m) {
